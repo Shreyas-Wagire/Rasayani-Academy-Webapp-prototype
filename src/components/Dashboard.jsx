@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   BookOpen, 
@@ -76,12 +77,101 @@ const Dashboard = () => {
     }
   ];
 
+  // Mock data for demonstration
+  const stats = [
+    { title: 'Total Courses', value: '12', icon: '📚' },
+    { title: 'Active Students', value: '1,234', icon: '👥' },
+    { title: 'Total Videos', value: '456', icon: '🎥' },
+    { title: 'Total Audio', value: '789', icon: '🎧' },
+  ];
+
+  const recentActivities = [
+    { title: 'New Video Uploaded', subject: 'Physics', time: '2 hours ago' },
+    { title: 'Course Updated', subject: 'Chemistry', time: '5 hours ago' },
+    { title: 'New Student Enrolled', subject: 'Mathematics', time: '1 day ago' },
+    { title: 'Study Material Added', subject: 'Biology', time: '2 days ago' },
+  ];
+
+  const quickLinks = [
+    { title: 'Audio Library', path: '/audio-library', icon: '🎧' },
+    { title: 'Video Library', path: '/video-library', icon: '🎥' },
+    { title: 'Previous Year Questions', path: '/previous-year-questions', icon: '📝' },
+    { title: 'Study Materials', path: '/study-materials', icon: '📚' },
+  ];
+
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-white rounded-xl p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold text-gray-900">Welcome back!</h1>
-        <p className="text-gray-600 mt-1">Your learning journey continues here</p>
+      <div className="bg-white rounded-lg shadow p-6">
+        <h1 className="text-3xl font-bold text-gray-800">Welcome to Rasayani Academy</h1>
+        <p className="text-gray-600 mt-2">Your comprehensive learning platform for science education</p>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, index) => (
+          <div key={index} className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">{stat.title}</p>
+                <p className="text-2xl font-bold text-gray-800 mt-1">{stat.value}</p>
+              </div>
+              <span className="text-3xl">{stat.icon}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Quick Links */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Quick Access</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {quickLinks.map((link, index) => (
+            <Link
+              key={index}
+              to={link.path}
+              className="flex flex-col items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <span className="text-2xl mb-2">{link.icon}</span>
+              <span className="text-sm font-medium text-gray-700 text-center">{link.title}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Recent Activities */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Activities</h2>
+        <div className="space-y-4">
+          {recentActivities.map((activity, index) => (
+            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div>
+                <p className="font-medium text-gray-800">{activity.title}</p>
+                <p className="text-sm text-gray-600">{activity.subject}</p>
+              </div>
+              <span className="text-sm text-gray-500">{activity.time}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Featured Courses */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Featured Courses</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {['Physics', 'Chemistry', 'Biology', 'Mathematics'].map((subject, index) => (
+            <div key={index} className="bg-gray-50 rounded-lg p-4">
+              <h3 className="font-medium text-gray-800 mb-2">{subject}</h3>
+              <p className="text-sm text-gray-600 mb-4">Comprehensive study materials and practice questions</p>
+              <Link
+                to={`/subjects/${subject.toLowerCase()}/12/chapters`}
+                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+              >
+                View Course →
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Quick Actions */}
