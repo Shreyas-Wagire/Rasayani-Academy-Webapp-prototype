@@ -37,22 +37,14 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/audio-library" element={<AudioLibraryProgram />} />
-              <Route path="/audio-library/:standard" element={<SubjectsPage />} />
-              <Route path="/subjects/:subject/:standard/chapters" element={<ChaptersPage />} />
-              <Route path="/subjects/:subject/:standard/chapters/:chapterId" element={<ChapterDetail />} />
-              <Route path="/subjects/:subject/:standard/chapters/:chapterId/topics" element={<TopicsPage />} />
-              <Route path="/video-library" element={<VideoLibraryProgram />} />
-              <Route path="/video-library/:standard" element={<VideoSubjectsPage />} />
-              <Route path="/video-subjects/:subject/:standard/chapters" element={<VideoChaptersPage />} />
-              <Route path="/video-subjects/:subject/:standard/chapters/:chapterId/topics" element={<VideoTopicsPage />} />
-              <Route path="/ncert-video-library" element={<NCERTVideoLibrary />} />
-              <Route path="/ncert-video-library/:standard" element={<NCERTVideoSubjects />} />
-              <Route path="/mhtc-epyq" element={<MHTCEPYQ />} />
-              <Route path="/neet-jee-epyq" element={<NEETJEEPYQ />} />
-              <Route path="/csir-net-set" element={<CSIRNETSET />} />
+              <Route path="/video-library/*" element={<VideoLibrary />} />
+              <Route path="/audio-library/*" element={<AudioLibraryProgram />} />
               <Route path="/previous-year-questions" element={<PreviousYearQuestions />} />
               <Route path="/study-materials" element={<StudyMaterials />} />
+              <Route path="/ncert-video-library" element={<NCERTVideoLibrary />} />
+              <Route path="/mht-cet-pyq/*" element={<MHTCEPYQ />} />
+              <Route path="/neet-jee-pyq/*" element={<NEETJEEPYQ />} />
+              <Route path="/csir-net-set/*" element={<CSIRNETSET />} />
             </Routes>
           </div>
         </main>

@@ -1,132 +1,550 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { FileText, Download, BookOpen, Play } from 'lucide-react';
 
-const chapters = {
-  chemistry: [
+// Mock data for chapters and their content
+const csirChapters = {
+  'organic-chemistry': [
     {
-      id: '01',
-      title: 'Physical Chemistry',
-      description: 'Basic concepts of physical chemistry including thermodynamics, kinetics, and quantum mechanics'
+      id: 1,
+      title: 'Ch 01: Chemical Bonding',
+      lectures: [
+        {
+          id: 1,
+          title: "Chemical Bonding 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          type: "Lecture"
+        },
+        {
+          id: 2,
+          title: "Chemical Bonding 02: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "5 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [
+        {
+          id: 1,
+          title: "Chemical Bonding Notes Part 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          downloadUrl: "#"
+        }
+      ],
+      dpp: [
+        {
+          id: 1,
+          title: "Chemical Bonding DPP 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          downloadUrl: "#"
+        }
+      ],
+      dppPdf: [
+        {
+          id: 1,
+          title: "Chemical Bonding DPP PDF 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          downloadUrl: "#"
+        }
+      ],
+      dppVideos: [
+        {
+          id: 1,
+          title: "Chemical Bonding DPP Video Solution 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          videoUrl: "#"
+        }
+      ]
     },
     {
-      id: '02',
-      title: 'Inorganic Chemistry',
-      description: 'Study of inorganic compounds, their properties, and reactions'
-    },
-    {
-      id: '03',
-      title: 'Organic Chemistry',
-      description: 'Structure, properties, and reactions of organic compounds'
-    },
-    {
-      id: '04',
-      title: 'Analytical Chemistry',
-      description: 'Methods and techniques for chemical analysis'
+      id: 2,
+      title: 'Ch 02: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
     }
   ],
-  physics: [
+  'inorganic-chemistry': [
     {
-      id: '01',
-      title: 'Classical Mechanics',
-      description: 'Newtonian mechanics, Lagrangian and Hamiltonian formulations'
+      id: 1,
+      title: 'Ch 01: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [
+        {
+          id: 1,
+          title: "Atomic Structure Notes Part 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          downloadUrl: "#"
+        }
+      ],
+      dpp: [
+        {
+          id: 1,
+          title: "Atomic Structure DPP 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          downloadUrl: "#"
+        }
+      ],
+      dppPdf: [
+        {
+          id: 1,
+          title: "Atomic Structure DPP PDF 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          downloadUrl: "#"
+        }
+      ],
+      dppVideos: [
+        {
+          id: 1,
+          title: "Atomic Structure DPP Video Solution 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          videoUrl: "#"
+        }
+      ]
     },
     {
-      id: '02',
-      title: 'Quantum Mechanics',
-      description: 'Wave-particle duality, Schrödinger equation, and quantum states'
+      id: 2,
+      title: 'Ch 02: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
     },
     {
-      id: '03',
-      title: 'Electromagnetism',
-      description: 'Electric and magnetic fields, Maxwell\'s equations'
+      id: 3,
+      title: 'Ch 03: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
     },
     {
-      id: '04',
-      title: 'Thermodynamics',
-      description: 'Laws of thermodynamics, statistical mechanics'
+      id: 4,
+      title: 'Ch 04: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
+    },
+    {
+      id: 5,
+      title: 'Ch 05: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
+    },
+    {
+      id: 6,
+      title: 'Ch 06: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
+    },
+    {
+      id: 7,
+      title: 'Ch 07: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
+    },
+    {
+      id: 8,
+      title: 'Ch 08: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
     }
   ],
-  biology: [
+  'physical-chemistry': [
     {
-      id: '01',
-      title: 'Cell Biology',
-      description: 'Structure and function of cells, cell division, and cell signaling'
+      id: 1,
+      title: 'Ch 01: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [
+        {
+          id: 1,
+          title: "Atomic Structure Notes Part 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          downloadUrl: "#"
+        }
+      ],
+      dpp: [
+        {
+          id: 1,
+          title: "Atomic Structure DPP 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          downloadUrl: "#"
+        }
+      ],
+      dppPdf: [
+        {
+          id: 1,
+          title: "Atomic Structure DPP PDF 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          downloadUrl: "#"
+        }
+      ],
+      dppVideos: [
+        {
+          id: 1,
+          title: "Atomic Structure DPP Video Solution 1",
+          instructor: "Dr. Arjuna JEE",
+          date: "4 December, 2023",
+          videoUrl: "#"
+        }
+      ]
     },
     {
-      id: '02',
-      title: 'Molecular Biology',
-      description: 'DNA structure, replication, transcription, and translation'
+      id: 2,
+      title: 'Ch 02: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
     },
     {
-      id: '03',
-      title: 'Genetics',
-      description: 'Mendelian genetics, molecular genetics, and population genetics'
+      id: 3,
+      title: 'Ch 03: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
     },
     {
-      id: '04',
-      title: 'Evolution',
-      description: 'Natural selection, speciation, and evolutionary processes'
-    }
-  ],
-  mathematics: [
-    {
-      id: '01',
-      title: 'Linear Algebra',
-      description: 'Vector spaces, matrices, determinants, and linear transformations'
+      id: 4,
+      title: 'Ch 04: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
     },
     {
-      id: '02',
-      title: 'Calculus',
-      description: 'Differential and integral calculus, multivariable calculus'
+      id: 5,
+      title: 'Ch 05: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
     },
     {
-      id: '03',
-      title: 'Complex Analysis',
-      description: 'Complex numbers, functions, and integration'
+      id: 6,
+      title: 'Ch 06: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
     },
     {
-      id: '04',
-      title: 'Abstract Algebra',
-      description: 'Groups, rings, fields, and their properties'
+      id: 7,
+      title: 'Ch 07: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
+    },
+    {
+      id: 8,
+      title: 'Ch 08: Atomic Structure',
+      lectures: [
+        {
+          id: 1,
+          title: "Atomic Structure 01: Class Notes",
+          instructor: "Dr. Arjuna JEE",
+          date: "6 December, 2023",
+          type: "Lecture"
+        }
+      ],
+      notes: [],
+      dpp: [],
+      dppPdf: [],
+      dppVideos: []
     }
   ]
 };
 
 const ChapterList = () => {
   const { subject } = useParams();
-  const subjectChapters = chapters[subject.toLowerCase()] || [];
-  
+  const chapters = csirChapters[subject] || [];
+  const [selectedChapter, setSelectedChapter] = React.useState(null);
+  const [activeTab, setActiveTab] = React.useState('Lectures');
+
+  const renderResourceCard = (resource, type) => {
+    const icon = type === 'Lectures' ? <Play className="w-5 h-5" /> :
+                type === 'Notes' ? <BookOpen className="w-5 h-5" /> :
+                <FileText className="w-5 h-5" />;
+
+    return (
+      <div key={resource.id} className="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
+        <div className="flex justify-between items-start mb-4">
+          <div className="flex-1">
+            <h3 className="font-medium text-gray-900">{resource.title}</h3>
+            <p className="text-sm text-gray-500">{resource.instructor}</p>
+            <p className="text-xs text-gray-400 mt-1">{resource.date}</p>
+          </div>
+          <div className="text-gray-400">
+            {icon}
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <button className="flex items-center px-3 py-1 text-sm font-medium text-blue-600 bg-blue-50 rounded-full hover:bg-blue-100">
+            <Download className="w-4 h-4 mr-1" />
+            Download
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  const renderContent = () => {
+    if (!selectedChapter) {
+      return (
+        <div className="grid grid-cols-1 gap-4 max-w-3xl mx-auto">
+          {chapters.map((chapter) => (
+            <button
+              key={chapter.id}
+              onClick={() => setSelectedChapter(chapter)}
+              className="text-left bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow w-full"
+            >
+              <h3 className="font-medium text-gray-900">{chapter.title}</h3>
+            </button>
+          ))}
+        </div>
+      );
+    }
+
+    let resources = [];
+    switch (activeTab) {
+      case 'Lectures':
+        resources = selectedChapter.lectures;
+        break;
+      case 'Notes':
+        resources = selectedChapter.notes;
+        break;
+      case 'DPP':
+        resources = selectedChapter.dpp;
+        break;
+      case 'DPP PDF':
+        resources = selectedChapter.dppPdf;
+        break;
+      case 'DPP VIDEOS':
+        resources = selectedChapter.dppVideos;
+        break;
+      default:
+        resources = [];
+    }
+
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center space-x-4 mb-6">
+          <button
+            onClick={() => setSelectedChapter(null)}
+            className="text-blue-600 hover:text-blue-700"
+          >
+            ← Back to Chapters
+          </button>
+          <h2 className="text-xl font-medium text-gray-900">{selectedChapter.title}</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {resources.map(resource => renderResourceCard(resource, activeTab))}
+        </div>
+        {resources.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            No {activeTab.toLowerCase()} available for this chapter yet.
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            {subject.charAt(0).toUpperCase() + subject.slice(1)} Chapters
+    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-center border-b pb-4">
+          <h1 className="text-2xl font-bold text-gray-800">
+            {subject.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
           </h1>
-          <p className="text-xl text-gray-600 mb-12">
-            Select a chapter to view study materials and practice questions
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {subjectChapters.map((chapter) => (
-            <Link
-              key={chapter.id}
-              to={`/csir-net-set/${subject}/chapter/${chapter.id}`}
-              className="group relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+        {/* Tabs - Always visible */}
+        <div className="flex space-x-4 border-b">
+          {['Lectures', 'Notes', 'DPP', 'DPP PDF', 'DPP VIDEOS'].map((tab) => (
+            <button
+              key={tab}
+              className={`px-4 py-2 text-sm font-medium ${
+                activeTab === tab
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+              onClick={() => setActiveTab(tab)}
             >
-              <div className="p-6">
-                <div className="text-2xl font-bold text-blue-600 mb-2">Chapter {chapter.id}</div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
-                  {chapter.title}
-                </h2>
-                <p className="text-gray-600">
-                  {chapter.description}
-                </p>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-            </Link>
+              {tab}
+            </button>
           ))}
+        </div>
+
+        {/* Content */}
+        <div className="mt-6">
+          {renderContent()}
         </div>
       </div>
     </div>

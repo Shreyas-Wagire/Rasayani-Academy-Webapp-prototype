@@ -1,37 +1,41 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Routes, Route, useNavigate } from 'react-router-dom';
+import ChapterList from './ChapterList';
 
 const subjects = [
   {
     title: 'Organic Chemistry',
-    description: 'Comprehensive study material for Organic Chemistry in CSIR-UGC NET/SET',
+    description: 'Study organic compounds, their structures, properties, and reactions',
     icon: '⚗️',
-    path: '/csir-net-set/organic-chemistry'
+    path: '/csir-net-set/organic-chemistry',
+    chapters: 15
   },
   {
     title: 'Inorganic Chemistry',
-    description: 'Comprehensive study material for Inorganic Chemistry in CSIR-UGC NET/SET',
+    description: 'Study elements, minerals, and non-carbon-based compounds',
     icon: '🧪',
-    path: '/csir-net-set/inorganic-chemistry'
+    path: '/csir-net-set/inorganic-chemistry',
+    chapters: 12
   },
   {
     title: 'Physical Chemistry',
-    description: 'Comprehensive study material for Physical Chemistry in CSIR-UGC NET/SET',
+    description: 'Study the physical principles underlying chemical phenomena',
     icon: '⚡',
-    path: '/csir-net-set/physical-chemistry'
+    path: '/csir-net-set/physical-chemistry',
+    chapters: 10
   }
 ];
 
-const CSIRNETSET = () => {
+const SubjectSelection = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            CSIR-UGC NET/SET in Chemical Science
+            CSIR-UGC NET/SET Chemistry
           </h1>
           <p className="text-xl text-gray-600 mb-12">
-            Select a subject to access comprehensive study material
+            Select a branch to access comprehensive study material
           </p>
         </div>
 
@@ -40,16 +44,25 @@ const CSIRNETSET = () => {
             <Link
               key={index}
               to={subject.path}
-              className="group relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              className="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             >
               <div className="p-6">
-                <div className="text-4xl mb-4">{subject.icon}</div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
+                <div className="text-5xl mb-6">{subject.icon}</div>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-3">
                   {subject.title}
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-gray-600 mb-4">
                   {subject.description}
                 </p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <span className="font-medium">{subject.chapters} Chapters</span>
+                </div>
+                <div className="mt-4 inline-flex items-center text-blue-600 group-hover:text-blue-700">
+                  <span className="font-medium">Start Learning</span>
+                  <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
             </Link>
@@ -57,6 +70,15 @@ const CSIRNETSET = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const CSIRNETSET = () => {
+  return (
+    <Routes>
+      <Route index element={<SubjectSelection />} />
+      <Route path=":subject/*" element={<ChapterList />} />
+    </Routes>
   );
 };
 

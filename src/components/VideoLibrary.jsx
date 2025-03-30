@@ -1,241 +1,330 @@
-import { 
-  Search, 
-  Filter, 
-  Play, 
-  Clock, 
-  ChevronRight,
-  Download,
-  BookOpen,
-  ThumbsUp
-} from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { ChevronRight, ArrowLeft } from 'lucide-react';
+
+const subjects = {
+  physics: {
+    title: 'Physics',
+    icon: '⚡',
+    color: 'bg-blue-50 text-blue-600',
+    borderColor: 'border-blue-200',
+    chapters: [
+      {
+        id: 1,
+        title: 'Ch 01: Physical World',
+      },
+      {
+        id: 2,
+        title: 'Ch 02: Units and Measurements',
+      },
+      {
+        id: 3,
+        title: 'Ch 03: Motion in a Straight Line',
+      },
+      {
+        id: 4,
+        title: 'Ch 04: Motion in a Plane',
+      }
+    ]
+  },
+  chemistry: {
+    title: 'Chemistry',
+    icon: '⚗️',
+    color: 'bg-purple-50 text-purple-600',
+    borderColor: 'border-purple-200',
+    chapters: [
+      {
+        id: 1,
+        title: 'Ch 01: Some Basic Concepts',
+      },
+      {
+        id: 2,
+        title: 'Ch 02: Atomic Structure',
+      },
+      {
+        id: 3,
+        title: 'Ch 03: Chemical Bonding',
+      },
+      {
+        id: 4,
+        title: 'Ch 04: Periodic Table',
+      }
+    ]
+  },
+  biology: {
+    title: 'Biology',
+    icon: '🧬',
+    color: 'bg-green-50 text-green-600',
+    borderColor: 'border-green-200',
+    chapters: [
+      {
+        id: 1,
+        title: 'Ch 01: The Living World',
+      },
+      {
+        id: 2,
+        title: 'Ch 02: Biological Classification',
+      },
+      {
+        id: 3,
+        title: 'Ch 03: Plant Kingdom',
+      },
+      {
+        id: 4,
+        title: 'Ch 04: Animal Kingdom',
+      }
+    ]
+  },
+  mathematics: {
+    title: 'Mathematics',
+    icon: '📐',
+    color: 'bg-red-50 text-red-600',
+    borderColor: 'border-red-200',
+    chapters: [
+      {
+        id: 1,
+        title: 'Ch 01: Sets',
+      },
+      {
+        id: 2,
+        title: 'Ch 02: Relations and Functions',
+      },
+      {
+        id: 3,
+        title: 'Ch 03: Trigonometry',
+      },
+      {
+        id: 4,
+        title: 'Ch 04: Complex Numbers',
+      }
+    ]
+  }
+};
+
+const boards = [
+  {
+    id: '11',
+    title: '11th Standard',
+    description: 'Video lectures for 11th standard Maharashtra Board',
+    icon: '📚'
+  },
+  {
+    id: '12',
+    title: '12th Standard',
+    description: 'Video lectures for 12th standard Maharashtra Board',
+    icon: '🎓'
+  },
+  {
+    id: '11-neet-jee',
+    title: '11th NEET/JEE',
+    description: 'Video lectures for 11th standard NEET & JEE preparation',
+    icon: '🔬'
+  },
+  {
+    id: '12-neet-jee',
+    title: '12th NEET/JEE',
+    description: 'Video lectures for 12th standard NEET & JEE preparation',
+    icon: '⚛️'
+  }
+];
 
 const VideoLibrary = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSubject, setSelectedSubject] = useState('all');
+  const [selectedBoard, setSelectedBoard] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [selectedChapter, setSelectedChapter] = useState(null);
+  const [activeTab, setActiveTab] = useState('Lectures');
 
-  const subjects = [
-    { id: 'all', name: 'All Subjects' },
-    { id: 'chemistry', name: 'Chemistry' },
-    { id: 'physics', name: 'Physics' },
-    { id: 'biology', name: 'Biology' },
-    { id: 'mathematics', name: 'Mathematics' },
-    { id: 'science', name: 'Science' }
-  ];
-
-  const videoLectures = [
-    {
-      id: 1,
-      title: 'Chemical Bonding - Part 1',
-      subject: 'Chemistry',
-      duration: '45:30',
-      instructor: 'Dr. Sharma',
-      date: '2024-03-15',
-      views: 1234,
-      likes: 89,
-      thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-    },
-    {
-      id: 2,
-      title: 'Newton\'s Laws of Motion',
-      subject: 'Physics',
-      duration: '38:15',
-      instructor: 'Prof. Verma',
-      date: '2024-03-14',
-      views: 987,
-      likes: 67,
-      thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-    },
-    {
-      id: 3,
-      title: 'Integration Techniques',
-      subject: 'Mathematics',
-      duration: '42:00',
-      instructor: 'Dr. Gupta',
-      date: '2024-03-13',
-      views: 856,
-      likes: 45,
-      thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-    },
-    {
-      id: 4,
-      title: 'Organic Chemistry Fundamentals',
-      subject: 'Chemistry',
-      duration: '55:20',
-      instructor: 'Dr. Sharma',
-      date: '2024-03-12',
-      views: 1456,
-      likes: 92,
-      thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-    },
-    {
-      id: 5,
-      title: 'Electromagnetic Induction',
-      subject: 'Physics',
-      duration: '48:45',
-      instructor: 'Prof. Verma',
-      date: '2024-03-11',
-      views: 1123,
-      likes: 78,
-      thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-    },
-    {
-      id: 6,
-      title: 'Differential Equations',
-      subject: 'Mathematics',
-      duration: '51:30',
-      instructor: 'Dr. Gupta',
-      date: '2024-03-10',
-      views: 945,
-      likes: 56,
-      thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-    },
-    {
-      id: 7,
-      title: 'Thermodynamics Basics',
-      subject: 'Chemistry',
-      duration: '44:15',
-      instructor: 'Dr. Sharma',
-      date: '2024-03-09',
-      views: 1345,
-      likes: 83,
-      thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-    },
-    {
-      id: 8,
-      title: 'Wave Optics',
-      subject: 'Physics',
-      duration: '47:30',
-      instructor: 'Prof. Verma',
-      date: '2024-03-08',
-      views: 876,
-      likes: 71,
-      thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-    },
-    {
-      id: 9,
-      title: 'Vector Calculus',
-      subject: 'Mathematics',
-      duration: '53:45',
-      instructor: 'Dr. Gupta',
-      date: '2024-03-07',
-      views: 765,
-      likes: 49,
-      thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-    }
-  ];
-
-  const filteredLectures = videoLectures.filter(lecture => {
-    const matchesSearch = lecture.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesSubject = selectedSubject === 'all' || lecture.subject.toLowerCase() === selectedSubject;
-    return matchesSearch && matchesSubject;
-  });
-
-  return (
+  const renderChapterContent = () => (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Video Library</h1>
-          <p className="text-gray-500 mt-1">Watch recorded lectures and study materials</p>
-        </div>
+      <div className="flex items-center space-x-4 mb-8">
+        <button
+          onClick={() => setSelectedChapter(null)}
+          className="flex items-center text-blue-600 hover:text-blue-700"
+        >
+          <ArrowLeft className="w-5 h-5 mr-1" />
+          Back to Chapters
+        </button>
+        <h2 className="text-2xl font-bold text-gray-900">
+          {selectedChapter.title}
+        </h2>
       </div>
 
-      {/* Search and Subject Filter */}
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            type="text"
-            placeholder="Search lectures..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+      <div className="space-y-4">
+        <div className="flex space-x-4 mb-6">
+          {['Lectures', 'Notes', 'DPP', 'DPP PDF', 'DPP VIDEOS'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 rounded-md transition-colors ${
+                activeTab === tab
+                  ? 'bg-blue-600 text-white'
+                  : 'text-blue-600 bg-blue-50 hover:bg-blue-100'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
-        <div className="flex items-center space-x-2">
-          <Filter className="w-5 h-5 text-gray-400" />
-          <select
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            className="px-4 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            {subjects.map(subject => (
-              <option key={subject.id} value={subject.id}>
-                {subject.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
 
-      {/* Video Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredLectures.map(lecture => (
-          <div 
-            key={lecture.id}
-            className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
-          >
-            {/* Thumbnail */}
-            <div className="relative aspect-video">
-              <img 
-                src={lecture.thumbnail} 
-                alt={lecture.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                <Play className="w-12 h-12 text-white" />
-              </div>
-              <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-sm">
-                {lecture.duration}
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-4">
-              <div className="flex items-start justify-between">
+        <div className="grid grid-cols-1 gap-4">
+          {activeTab === 'Notes' && Array.from({ length: 8 }).map((_, idx) => (
+            <div key={idx} className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-center">
                 <div>
-                  <h3 className="font-medium text-gray-900 line-clamp-2">{lecture.title}</h3>
-                  <div className="flex items-center space-x-4 mt-1">
-                    <span className="text-sm text-gray-500">{lecture.subject}</span>
-                    <span className="text-sm text-gray-500">•</span>
-                    <span className="text-sm text-gray-500">{lecture.instructor}</span>
-                  </div>
+                  <h3 className="font-medium text-gray-900">
+                    {selectedChapter.title} - Class Notes {idx + 1}
+                  </h3>
+                  <p className="text-sm text-gray-500">Arjuna JEE 4.0</p>
                 </div>
-                <button className="p-2 rounded-lg hover:bg-gray-100">
-                  <Download className="w-5 h-5 text-gray-400" />
+                <button className="flex items-center px-3 py-1 text-sm font-medium text-blue-600 bg-blue-50 rounded-full hover:bg-blue-100">
+                  <span className="mr-1">Download PDF</span>
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
-
-              <div className="mt-3 flex items-center justify-between text-sm text-gray-500">
-                <div className="flex items-center space-x-4">
-                  <span>Added on {new Date(lecture.date).toLocaleDateString()}</span>
-                  <span>•</span>
-                  <span>{lecture.views} views</span>
-                </div>
-                <div className="flex items-center space-x-1 text-blue-600">
-                  <ThumbsUp className="w-4 h-4" />
-                  <span>{lecture.likes}</span>
-                </div>
-              </div>
-
-              <button className="mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
-                <span>Watch Now</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
             </div>
-          </div>
-        ))}
+          ))}
+
+          {activeTab === 'Lectures' && Array.from({ length: 4 }).map((_, idx) => (
+            <div key={idx} className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center space-x-4">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                    <span className="text-2xl">📚</span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-gray-900">
+                    {selectedChapter.title} - Lecture {idx + 1}
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    Duration: 45 minutes
+                  </p>
+                </div>
+                <button className="px-4 py-2 text-blue-600 hover:text-blue-700">
+                  Watch Now
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderChapters = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4 mb-8">
+        <button
+          onClick={() => setSelectedSubject(null)}
+          className="flex items-center text-blue-600 hover:text-blue-700"
+        >
+          <ArrowLeft className="w-5 h-5 mr-1" />
+          Back to Subjects
+        </button>
+        <h2 className="text-2xl font-bold text-gray-900">
+          {subjects[selectedSubject].title} Chapters
+        </h2>
       </div>
 
-      {/* Empty State */}
-      {filteredLectures.length === 0 && (
-        <div className="text-center py-12">
-          <Play className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900">No lectures found</h3>
-          <p className="text-gray-500 mt-2">Try adjusting your search or filters</p>
-        </div>
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {subjects[selectedSubject].chapters.map((chapter) => (
+          <button
+            key={chapter.id}
+            onClick={() => setSelectedChapter(chapter)}
+            className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 text-left"
+          >
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {chapter.title}
+            </h3>
+            <div className="flex items-center text-blue-600">
+              <span className="text-sm font-medium">View Content</span>
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderSubjects = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4 mb-8">
+        <button
+          onClick={() => setSelectedBoard(null)}
+          className="flex items-center text-blue-600 hover:text-blue-700"
+        >
+          <ArrowLeft className="w-5 h-5 mr-1" />
+          Back to Boards
+        </button>
+        <h2 className="text-2xl font-bold text-gray-900">
+          {boards.find(b => b.id === selectedBoard).title} Subjects
+        </h2>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {Object.entries(subjects).map(([id, subject]) => (
+          <button
+            key={id}
+            onClick={() => setSelectedSubject(id)}
+            className={`p-6 rounded-xl border ${subject.borderColor} text-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg`}
+          >
+            <div className="text-4xl mb-3">{subject.icon}</div>
+            <h3 className="text-lg font-semibold text-gray-900">{subject.title}</h3>
+            <p className="text-sm text-gray-500 mt-2">View all chapters</p>
+            <div className={`mt-4 inline-flex items-center justify-center px-4 py-2 rounded-full ${subject.color}`}>
+              Browse Chapters
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderBoardSelection = () => (
+    <div className="space-y-8">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          Video Library Programme (Maharashtra Board)
+        </h1>
+        <p className="text-xl text-gray-600">
+          Select your board to access video lectures and study materials
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        {boards.map((board) => (
+          <button
+            key={board.id}
+            onClick={() => setSelectedBoard(board.id)}
+            className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <div className="p-8">
+              <div className="text-4xl mb-4">{board.icon}</div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                {board.title}
+              </h2>
+              <p className="text-gray-600 mb-6">
+                {board.description}
+              </p>
+              <div className="inline-flex items-center text-blue-600 group-hover:text-blue-700">
+                <span className="font-medium">Browse Content</span>
+                <ChevronRight className="w-5 h-5 ml-2" />
+              </div>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {!selectedBoard && renderBoardSelection()}
+        {selectedBoard && !selectedSubject && renderSubjects()}
+        {selectedBoard && selectedSubject && !selectedChapter && renderChapters()}
+        {selectedBoard && selectedSubject && selectedChapter && renderChapterContent()}
+      </div>
     </div>
   );
 };
