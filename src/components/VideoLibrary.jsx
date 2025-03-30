@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { ChevronRight, ArrowLeft } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { Card, CardGrid } from './shared/Card';
+import { Button, BackButton, TabButton } from './shared/Button';
+import { PageContainer, PageHeader, Section } from './shared/Layout';
 
 const subjects = {
   physics: {
@@ -134,15 +137,11 @@ const VideoLibrary = () => {
   const [activeTab, setActiveTab] = useState('Lectures');
 
   const renderChapterContent = () => (
-    <div className="space-y-6">
+    <Section>
       <div className="flex items-center space-x-4 mb-8">
-        <button
-          onClick={() => setSelectedChapter(null)}
-          className="flex items-center text-blue-600 hover:text-blue-700"
-        >
-          <ArrowLeft className="w-5 h-5 mr-1" />
+        <BackButton onClick={() => setSelectedChapter(null)}>
           Back to Chapters
-        </button>
+        </BackButton>
         <h2 className="text-2xl font-bold text-gray-900">
           {selectedChapter.title}
         </h2>
@@ -151,181 +150,123 @@ const VideoLibrary = () => {
       <div className="space-y-4">
         <div className="flex space-x-4 mb-6">
           {['Lectures', 'Notes', 'DPP', 'DPP PDF', 'DPP VIDEOS'].map((tab) => (
-            <button
+            <TabButton
               key={tab}
+              isActive={activeTab === tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-md transition-colors ${
-                activeTab === tab
-                  ? 'bg-blue-600 text-white'
-                  : 'text-blue-600 bg-blue-50 hover:bg-blue-100'
-              }`}
             >
               {tab}
-            </button>
+            </TabButton>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
+        <CardGrid columns={{ default: 1 }}>
           {activeTab === 'Notes' && Array.from({ length: 8 }).map((_, idx) => (
-            <div key={idx} className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h3 className="font-medium text-gray-900">
-                    {selectedChapter.title} - Class Notes {idx + 1}
-                  </h3>
-                  <p className="text-sm text-gray-500">Arjuna JEE 4.0</p>
-                </div>
-                <button className="flex items-center px-3 py-1 text-sm font-medium text-blue-600 bg-blue-50 rounded-full hover:bg-blue-100">
-                  <span className="mr-1">Download PDF</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
+            <Card
+              key={idx}
+              title={`${selectedChapter.title} - Class Notes ${idx + 1}`}
+              description="Arjuna JEE 4.0"
+              size="small"
+              color="blue"
+              onClick={() => {}}
+            />
           ))}
 
           {activeTab === 'Lectures' && Array.from({ length: 4 }).map((_, idx) => (
-            <div key={idx} className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                    <span className="text-2xl">📚</span>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-medium text-gray-900">
-                    {selectedChapter.title} - Lecture {idx + 1}
-                  </h3>
-                  <p className="text-sm text-gray-500">
-                    Duration: 45 minutes
-                  </p>
-                </div>
-                <button className="px-4 py-2 text-blue-600 hover:text-blue-700">
-                  Watch Now
-                </button>
-              </div>
-            </div>
+            <Card
+              key={idx}
+              title={`${selectedChapter.title} - Lecture ${idx + 1}`}
+              description="Duration: 45 minutes"
+              icon="📚"
+              size="small"
+              color="blue"
+              onClick={() => {}}
+            />
           ))}
-        </div>
+        </CardGrid>
       </div>
-    </div>
+    </Section>
   );
 
   const renderChapters = () => (
-    <div className="space-y-6">
+    <Section>
       <div className="flex items-center space-x-4 mb-8">
-        <button
-          onClick={() => setSelectedSubject(null)}
-          className="flex items-center text-blue-600 hover:text-blue-700"
-        >
-          <ArrowLeft className="w-5 h-5 mr-1" />
+        <BackButton onClick={() => setSelectedSubject(null)}>
           Back to Subjects
-        </button>
+        </BackButton>
         <h2 className="text-2xl font-bold text-gray-900">
           {subjects[selectedSubject].title} Chapters
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <CardGrid columns={{ default: 1, md: 2 }}>
         {subjects[selectedSubject].chapters.map((chapter) => (
-          <button
+          <Card
             key={chapter.id}
+            title={chapter.title}
             onClick={() => setSelectedChapter(chapter)}
-            className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 text-left"
-          >
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              {chapter.title}
-            </h3>
-            <div className="flex items-center text-blue-600">
-              <span className="text-sm font-medium">View Content</span>
-              <ChevronRight className="w-4 h-4 ml-1" />
-            </div>
-          </button>
+            color="blue"
+          />
         ))}
-      </div>
-    </div>
+      </CardGrid>
+    </Section>
   );
 
   const renderSubjects = () => (
-    <div className="space-y-6">
+    <Section>
       <div className="flex items-center space-x-4 mb-8">
-        <button
-          onClick={() => setSelectedBoard(null)}
-          className="flex items-center text-blue-600 hover:text-blue-700"
-        >
-          <ArrowLeft className="w-5 h-5 mr-1" />
+        <BackButton onClick={() => setSelectedBoard(null)}>
           Back to Boards
-        </button>
+        </BackButton>
         <h2 className="text-2xl font-bold text-gray-900">
           {boards.find(b => b.id === selectedBoard).title} Subjects
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <CardGrid columns={{ default: 1, md: 2, lg: 4 }}>
         {Object.entries(subjects).map(([id, subject]) => (
-          <button
+          <Card
             key={id}
+            title={subject.title}
+            description="View all chapters"
+            icon={subject.icon}
+            color={id === 'physics' ? 'blue' : id === 'chemistry' ? 'purple' : id === 'biology' ? 'green' : 'red'}
             onClick={() => setSelectedSubject(id)}
-            className={`p-6 rounded-xl border ${subject.borderColor} text-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg`}
-          >
-            <div className="text-4xl mb-3">{subject.icon}</div>
-            <h3 className="text-lg font-semibold text-gray-900">{subject.title}</h3>
-            <p className="text-sm text-gray-500 mt-2">View all chapters</p>
-            <div className={`mt-4 inline-flex items-center justify-center px-4 py-2 rounded-full ${subject.color}`}>
-              Browse Chapters
-            </div>
-          </button>
+          />
         ))}
-      </div>
-    </div>
+      </CardGrid>
+    </Section>
   );
 
   const renderBoardSelection = () => (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Video Library Programme (Maharashtra Board)
-        </h1>
-        <p className="text-xl text-gray-600">
-          Select your board to access video lectures and study materials
-        </p>
-      </div>
+    <>
+      <PageHeader
+        title="Video Library Programme (Maharashtra Board)"
+        description="Select your board to access video lectures and study materials"
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <CardGrid columns={{ default: 1, md: 2 }} className="max-w-6xl mx-auto">
         {boards.map((board) => (
-          <button
+          <Card
             key={board.id}
+            title={board.title}
+            description={board.description}
+            icon={board.icon}
             onClick={() => setSelectedBoard(board.id)}
-            className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-          >
-            <div className="p-8">
-              <div className="text-4xl mb-4">{board.icon}</div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                {board.title}
-              </h2>
-              <p className="text-gray-600 mb-6">
-                {board.description}
-              </p>
-              <div className="inline-flex items-center text-blue-600 group-hover:text-blue-700">
-                <span className="font-medium">Browse Content</span>
-                <ChevronRight className="w-5 h-5 ml-2" />
-              </div>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-          </button>
+            size="large"
+          />
         ))}
-      </div>
-    </div>
+      </CardGrid>
+    </>
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {!selectedBoard && renderBoardSelection()}
-        {selectedBoard && !selectedSubject && renderSubjects()}
-        {selectedBoard && selectedSubject && !selectedChapter && renderChapters()}
-        {selectedBoard && selectedSubject && selectedChapter && renderChapterContent()}
-      </div>
-    </div>
+    <PageContainer>
+      {!selectedBoard && renderBoardSelection()}
+      {selectedBoard && !selectedSubject && renderSubjects()}
+      {selectedBoard && selectedSubject && !selectedChapter && renderChapters()}
+      {selectedBoard && selectedSubject && selectedChapter && renderChapterContent()}
+    </PageContainer>
   );
 };
 

@@ -1,207 +1,151 @@
 import React, { useState } from 'react';
-import { BookOpen, Download, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Card, CardGrid } from './shared/Card';
+import { BackButton } from './shared/Button';
+import { PageContainer, PageHeader, Section } from './shared/Layout';
 
-const subjects = [
+const standards = [
   {
-    id: 'physics',
-    title: 'Physics',
-    icon: '⚡',
-    color: 'bg-blue-50 text-blue-600',
-    borderColor: 'border-blue-200',
-    papers: [
-      {
-        id: 1,
-        title: "NEET 2023 Physics Paper",
-        date: "May 2023",
-        downloadUrl: "#"
-      },
-      {
-        id: 2,
-        title: "JEE 2023 Physics Paper",
-        date: "May 2023",
-        downloadUrl: "#"
-      }
-    ]
+    id: '11',
+    title: '11th Standard',
+    description: 'Previous Year Questions for 11th standard NEET & JEE preparation',
+    icon: '🔬'
   },
   {
-    id: 'chemistry',
-    title: 'Chemistry',
-    icon: '⚗️',
-    color: 'bg-purple-50 text-purple-600',
-    borderColor: 'border-purple-200',
-    papers: [
-      {
-        id: 1,
-        title: "NEET 2023 Chemistry Paper",
-        date: "May 2023",
-        downloadUrl: "#"
-      },
-      {
-        id: 2,
-        title: "JEE 2023 Chemistry Paper",
-        date: "May 2023",
-        downloadUrl: "#"
-      }
-    ]
-  },
-  {
-    id: 'biology',
-    title: 'Biology',
-    icon: '🧬',
-    color: 'bg-green-50 text-green-600',
-    borderColor: 'border-green-200',
-    papers: [
-      {
-        id: 1,
-        title: "NEET 2023 Biology Paper",
-        date: "May 2023",
-        downloadUrl: "#"
-      }
-    ]
-  },
-  {
-    id: 'mathematics',
-    title: 'Mathematics',
-    icon: '📐',
-    color: 'bg-red-50 text-red-600',
-    borderColor: 'border-red-200',
-    papers: [
-      {
-        id: 1,
-        title: "JEE 2023 Mathematics Paper",
-        date: "May 2023",
-        downloadUrl: "#"
-      }
-    ]
+    id: '12',
+    title: '12th Standard',
+    description: 'Previous Year Questions for 12th standard NEET & JEE preparation',
+    icon: '⚛️'
   }
 ];
+
+const subjects = {
+  physics: {
+    title: 'Physics',
+    icon: '⚡',
+    color: 'blue',
+    papers: [
+      { id: 1, title: 'NEET 2023 Physics Paper', date: 'May 2023' },
+      { id: 2, title: 'JEE Main 2023 Physics Paper', date: 'April 2023' },
+      { id: 3, title: 'JEE Advanced 2023 Physics Paper', date: 'June 2023' }
+    ]
+  },
+  chemistry: {
+    title: 'Chemistry',
+    icon: '⚗️',
+    color: 'purple',
+    papers: [
+      { id: 1, title: 'NEET 2023 Chemistry Paper', date: 'May 2023' },
+      { id: 2, title: 'JEE Main 2023 Chemistry Paper', date: 'April 2023' },
+      { id: 3, title: 'JEE Advanced 2023 Chemistry Paper', date: 'June 2023' }
+    ]
+  },
+  biology: {
+    title: 'Biology',
+    icon: '🧬',
+    color: 'green',
+    papers: [
+      { id: 1, title: 'NEET 2023 Biology Paper', date: 'May 2023' },
+      { id: 2, title: 'NEET 2022 Biology Paper', date: 'May 2022' },
+      { id: 3, title: 'NEET 2021 Biology Paper', date: 'May 2021' }
+    ]
+  },
+  mathematics: {
+    title: 'Mathematics',
+    icon: '📐',
+    color: 'red',
+    papers: [
+      { id: 1, title: 'JEE Main 2023 Mathematics Paper', date: 'April 2023' },
+      { id: 2, title: 'JEE Advanced 2023 Mathematics Paper', date: 'June 2023' },
+      { id: 3, title: 'JEE Main 2022 Mathematics Paper', date: 'April 2022' }
+    ]
+  }
+};
 
 const NEETJEEPYQ = () => {
   const [selectedStandard, setSelectedStandard] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
 
-  const renderPaperCard = (paper) => (
-    <div key={paper.id} className="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
-          <h3 className="font-medium text-gray-900">{paper.title}</h3>
-          <p className="text-sm text-gray-500">{paper.date}</p>
-        </div>
-        <div className="text-gray-400">
-          <BookOpen className="w-5 h-5" />
-        </div>
+  const renderPapers = () => (
+    <Section>
+      <div className="flex items-center space-x-4 mb-8">
+        <BackButton onClick={() => setSelectedSubject(null)}>
+          Back to Subjects
+        </BackButton>
+        <h2 className="text-2xl font-bold text-gray-900">
+          {selectedStandard.title} - {subjects[selectedSubject].title} Papers
+        </h2>
       </div>
-      <div className="flex justify-end">
-        <button className="flex items-center px-3 py-1 text-sm font-medium text-blue-600 bg-blue-50 rounded-full hover:bg-blue-100">
-          <Download className="w-4 h-4 mr-1" />
-          Download PDF
-        </button>
-      </div>
-    </div>
+
+      <CardGrid columns={{ default: 1, md: 2 }}>
+        {subjects[selectedSubject].papers.map((paper) => (
+          <Card
+            key={paper.id}
+            title={paper.title}
+            description={paper.date}
+            icon="📄"
+            size="small"
+            color={subjects[selectedSubject].color}
+            onClick={() => {}}
+          />
+        ))}
+      </CardGrid>
+    </Section>
   );
 
   const renderSubjects = () => (
-    <div className="space-y-6">
+    <Section>
       <div className="flex items-center space-x-4 mb-8">
-        <button
-          onClick={() => setSelectedStandard(null)}
-          className="flex items-center text-blue-600 hover:text-blue-700"
-        >
-          <ArrowLeft className="w-5 h-5 mr-1" />
+        <BackButton onClick={() => setSelectedStandard(null)}>
           Back to Standards
-        </button>
+        </BackButton>
         <h2 className="text-2xl font-bold text-gray-900">
-          {selectedStandard}th Standard Papers
+          {selectedStandard.title} Subjects
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {subjects.map((subject) => (
-          <button
-            key={subject.id}
-            onClick={() => setSelectedSubject(subject)}
-            className={`p-6 rounded-xl border ${subject.borderColor} text-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg`}
-          >
-            <div className="text-4xl mb-3">{subject.icon}</div>
-            <h3 className="text-lg font-semibold text-gray-900">{subject.title}</h3>
-            <p className="text-sm text-gray-500 mt-2">Previous Year Papers</p>
-            <div className={`mt-4 inline-flex items-center justify-center px-4 py-2 rounded-full ${subject.color}`}>
-              View Papers
-            </div>
-          </button>
+      <CardGrid columns={{ default: 1, md: 2, lg: 4 }}>
+        {Object.entries(subjects).map(([id, subject]) => (
+          <Card
+            key={id}
+            title={subject.title}
+            description="View previous year papers"
+            icon={subject.icon}
+            color={subject.color}
+            onClick={() => setSelectedSubject(id)}
+          />
         ))}
-      </div>
-    </div>
-  );
-
-  const renderPapers = () => (
-    <div className="space-y-6">
-      <div className="flex items-center space-x-4">
-        <button
-          onClick={() => setSelectedSubject(null)}
-          className="flex items-center text-blue-600 hover:text-blue-700"
-        >
-          <ArrowLeft className="w-5 h-5 mr-1" />
-          Back to Subjects
-        </button>
-        <h2 className="text-xl font-medium text-gray-900">
-          {selectedStandard}th Standard - {selectedSubject.title} Papers
-        </h2>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {selectedSubject.papers.map(paper => renderPaperCard(paper))}
-      </div>
-    </div>
+      </CardGrid>
+    </Section>
   );
 
   const renderStandardSelection = () => (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          NEET & JEE Previous Year Papers
-        </h1>
-        <p className="text-xl text-gray-600">
-          Select your standard to access previous year question papers
-        </p>
-      </div>
+    <>
+      <PageHeader
+        title="NEET & JEE Previous Year Questions"
+        description="Select your standard to access previous year question papers"
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        {[11, 12].map((standard) => (
-          <button
-            key={standard}
+      <CardGrid columns={{ default: 1, md: 2 }} className="max-w-4xl mx-auto">
+        {standards.map((standard) => (
+          <Card
+            key={standard.id}
+            title={standard.title}
+            description={standard.description}
+            icon={standard.icon}
             onClick={() => setSelectedStandard(standard)}
-            className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-          >
-            <div className="p-8">
-              <div className="text-4xl mb-4">
-                {standard === 11 ? '📚' : '🎓'}
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                {standard}th Standard
-              </h2>
-              <p className="text-gray-600 mb-6">
-                Access previous year question papers and study materials for {standard}th standard NEET & JEE preparation
-              </p>
-              <div className="inline-flex items-center text-blue-600 group-hover:text-blue-700">
-                <span className="font-medium">Browse Papers</span>
-                <ChevronRight className="w-5 h-5 ml-2" />
-              </div>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-          </button>
+            size="large"
+          />
         ))}
-      </div>
-    </div>
+      </CardGrid>
+    </>
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {!selectedStandard && renderStandardSelection()}
-        {selectedStandard && !selectedSubject && renderSubjects()}
-        {selectedStandard && selectedSubject && renderPapers()}
-      </div>
-    </div>
+    <PageContainer>
+      {!selectedStandard && renderStandardSelection()}
+      {selectedStandard && !selectedSubject && renderSubjects()}
+      {selectedStandard && selectedSubject && renderPapers()}
+    </PageContainer>
   );
 };
 
