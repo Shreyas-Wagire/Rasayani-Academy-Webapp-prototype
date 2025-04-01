@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Dashboard from './components/Dashboard';
 import AudioLibrary from './components/AudioLibrary';
-import VideoLibrary from './components/VideoLibrary';
+import VideoLibraryProgram from './components/VideoLibraryProgram';
 import PreviousYearQuestions from './components/PreviousYearQuestions';
 import StudyMaterials from './components/StudyMaterials';
 import Home from './components/Home';
@@ -10,7 +10,6 @@ import AudioLibraryProgram from './components/AudioLibraryProgram';
 import SubjectsPage from './components/SubjectsPage';
 import ChaptersPage from './components/ChaptersPage';
 import TopicsPage from './components/TopicsPage';
-import VideoLibraryProgram from './components/VideoLibraryProgram';
 import VideoSubjectsPage from './components/VideoSubjectsPage';
 import VideoChaptersPage from './components/VideoChaptersPage';
 import VideoTopicsPage from './components/VideoTopicsPage';
@@ -37,7 +36,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/video-library/*" element={<VideoLibrary />} />
+              <Route path="/video-library" element={<VideoLibraryProgram />} />
               <Route path="/audio-library/*" element={<AudioLibraryProgram />} />
               <Route path="/previous-year-questions" element={<PreviousYearQuestions />} />
               <Route path="/study-materials" element={<StudyMaterials />} />

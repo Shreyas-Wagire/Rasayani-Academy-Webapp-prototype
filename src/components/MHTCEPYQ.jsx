@@ -69,7 +69,7 @@ const MHTCEPYQ = () => {
     <Section>
       <div className="flex items-center space-x-4 mb-8">
         <BackButton onClick={() => setSelectedSubject(null)}>
-          Back to Subjects
+          Back to Standards
         </BackButton>
         <h2 className="text-2xl font-bold text-gray-900">
           {selectedStandard.title} - {subjects[selectedSubject].title} Papers
@@ -92,30 +92,17 @@ const MHTCEPYQ = () => {
     </Section>
   );
 
-  const renderSubjects = () => (
-    <Section>
-      <div className="flex items-center space-x-4 mb-8">
-        <BackButton onClick={() => setSelectedStandard(null)}>
-          Back to Standards
-        </BackButton>
-        <h2 className="text-2xl font-bold text-gray-900">
-          {selectedStandard.title} Subjects
-        </h2>
-      </div>
-
-      <CardGrid columns={{ default: 1, md: 2, lg: 4 }}>
-        {Object.entries(subjects).map(([id, subject]) => (
-          <Card
-            key={id}
-            title={subject.title}
-            description="View previous year papers"
-            icon={subject.icon}
-            color={subject.color}
-            onClick={() => setSelectedSubject(id)}
-          />
-        ))}
-      </CardGrid>
-    </Section>
+  const SubjectButton = ({ subject, subjectKey, standardId }) => (
+    <button
+      onClick={() => {
+        setSelectedStandard(standards.find(s => s.id === standardId));
+        setSelectedSubject(subjectKey);
+      }}
+      className={`flex items-center space-x-2 p-3 rounded-lg hover:bg-${subject.color}-50 transition-colors`}
+    >
+      <span className="text-xl">{subject.icon}</span>
+      <span className="font-medium">{subject.title}</span>
+    </button>
   );
 
   const renderStandardSelection = () => (
@@ -125,26 +112,36 @@ const MHTCEPYQ = () => {
         description="Select your standard to access previous year question papers"
       />
 
-      <CardGrid columns={{ default: 1, md: 2 }} className="max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
         {standards.map((standard) => (
-          <Card
-            key={standard.id}
-            title={standard.title}
-            description={standard.description}
-            icon={standard.icon}
-            onClick={() => setSelectedStandard(standard)}
-            size="large"
-          />
+          <div key={standard.id} className="bg-white rounded-xl shadow-md p-6">
+            <div className="flex items-center space-x-3 mb-4">
+              <span className="text-2xl">{standard.icon}</span>
+              <div>
+                <h3 className="text-xl font-bold">{standard.title}</h3>
+                <p className="text-gray-600 text-sm">{standard.description}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {Object.entries(subjects).map(([subjectKey, subject]) => (
+                <SubjectButton
+                  key={subjectKey}
+                  subject={subject}
+                  subjectKey={subjectKey}
+                  standardId={standard.id}
+                />
+              ))}
+            </div>
+          </div>
         ))}
-      </CardGrid>
+      </div>
     </>
   );
 
   return (
     <PageContainer>
-      {!selectedStandard && renderStandardSelection()}
-      {selectedStandard && !selectedSubject && renderSubjects()}
-      {selectedStandard && selectedSubject && renderPapers()}
+      {!selectedSubject && renderStandardSelection()}
+      {selectedSubject && renderPapers()}
     </PageContainer>
   );
 };
