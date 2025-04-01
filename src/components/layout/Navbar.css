@@ -1,0 +1,70 @@
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.nav-scrolled {
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.dropdown-menu {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.mobile-menu {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Hover effects */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #2563eb;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Button hover effects */
+.login-button {
+  transition: all 0.3s ease;
+}
+
+.login-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Icon animations */
+.nav-icon {
+  transition: transform 0.2s ease;
+}
+
+.nav-link:hover .nav-icon {
+  transform: scale(1.1);
+} 

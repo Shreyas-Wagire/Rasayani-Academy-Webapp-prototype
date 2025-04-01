@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Dashboard from './components/Dashboard';
@@ -21,9 +22,11 @@ import CSIRNETSET from './components/CSIRNETSET';
 import ChapterList from './components/ChapterList';
 import ChapterDetail from './components/ChapterDetail';
 import ChapterView from './components/shared/ChapterView';
+import SubjectChapters from './components/SubjectChapters';
+import PYQList from './components/PYQList';
 import './App.css';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <div className="h-screen flex flex-col overflow-hidden">
@@ -41,15 +44,17 @@ function App() {
               <Route path="/previous-year-questions" element={<PreviousYearQuestions />} />
               <Route path="/study-materials" element={<StudyMaterials />} />
               <Route path="/ncert-video-library" element={<NCERTVideoLibrary />} />
-              <Route path="/mht-cet-pyq/*" element={<MHTCEPYQ />} />
-              <Route path="/neet-jee-pyq/*" element={<NEETJEEPYQ />} />
+              <Route path="/mht-cet-pyq/:subject" element={<PYQList examType="mht-cet" />} />
+              <Route path="/neet-jee-pyq/:subject" element={<PYQList examType="neet-jee" />} />
               <Route path="/csir-net-set/*" element={<CSIRNETSET />} />
+              <Route path="/:course/:standard/:subject/chapters" element={<SubjectChapters />} />
+              <Route path="/:course/:standard/:subject/chapter/:chapterId" element={<ChapterList />} />
             </Routes>
           </div>
         </main>
       </div>
     </Router>
   );
-}
+};
 
 export default App;

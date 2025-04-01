@@ -333,7 +333,7 @@ const ChapterContent = ({ chapter, onBack }) => {
             ))}
           </nav>
         </div>
-      </div>
+        </div>
 
       {activeTab === 'Audio Lectures' && (
         <div className="space-y-4">

@@ -1,138 +1,176 @@
-import { useState } from 'react';
-import { 
-  Search, 
-  Bell, 
-  Menu,
-  X,
-  ChevronDown,
-  LogOut,
-  Settings,
-  User
-} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, ChevronDown, Book, Video, Headphones, FileText, Award, User } from 'lucide-react';
+import './Navbar.css';
+
+const navigation = [
+  {
+    name: 'Programs',
+    items: [
+      { name: 'Audio Library', href: '/audio-library', icon: <Headphones className="nav-icon w-5 h-5" /> },
+      { name: 'Video Library', href: '/video-library', icon: <Video className="nav-icon w-5 h-5" /> },
+      { name: 'NCERT/CBSE Videos', href: '/ncert-video-library', icon: <Book className="nav-icon w-5 h-5" /> }
+    ]
+  },
+  {
+    name: 'Previous Year Questions',
+    items: [
+      { name: 'MHT-CET PYQs', href: '/mht-cet-pyq/physics', icon: <FileText className="nav-icon w-5 h-5" /> },
+      { name: 'NEET & JEE PYQs', href: '/neet-jee-pyq/physics', icon: <FileText className="nav-icon w-5 h-5" /> },
+      { name: 'CSIR NET/SET', href: '/csir-net-set', icon: <Award className="nav-icon w-5 h-5" /> }
+    ]
+  }
+];
 
 const Navbar = () => {
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
-  const notifications = [
-    {
-      id: 1,
-      title: 'New lecture available',
-      message: 'Chemical Bonding lecture has been uploaded',
-      time: '5 min ago'
-    },
-    {
-      id: 2,
-      title: 'Assignment due soon',
-      message: 'Physics assignment due in 2 days',
-      time: '1 hour ago'
-    }
-  ];
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleDropdownClick = (index) => {
+    setActiveDropdown(activeDropdown === index ? null : index);
+  };
 
   return (
-    <nav className="px-4 py-3">
-      <div className="container mx-auto max-w-7xl">
-        <div className="flex items-center justify-between">
-          {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-6 h-6 text-gray-600" />
-            ) : (
-              <Menu className="w-6 h-6 text-gray-600" />
-            )}
-          </button>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white shadow-lg nav-scrolled' : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-3">
+            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+              Rasayani
+            </span>
+          </Link>
 
-          {/* Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-xl mx-4">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search for lectures, materials..."
-                className="w-full pl-10 pr-4 py-2 bg-gray-100 border border-transparent rounded-xl focus:bg-white focus:border-gray-300 transition-colors duration-200"
-              />
-            </div>
-          </div>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navigation.map((item, index) => (
+              <div key={item.name} className="relative group">
+                <button
+                  onClick={() => handleDropdownClick(index)}
+                  className="nav-link flex items-center space-x-1 px-3 py-2 text-gray-700 hover:text-blue-600 font-medium rounded-md group"
+                >
+                  <span>{item.name}</span>
+                  <ChevronDown className={`nav-icon w-4 h-4 transition-transform duration-200 ${
+                    activeDropdown === index ? 'rotate-180' : ''
+                  }`} />
+                </button>
 
-          {/* Right Section */}
-          <div className="flex items-center space-x-4">
-            {/* Notifications */}
-            <div className="relative">
-              <button
-                className="p-2 rounded-lg hover:bg-gray-100 relative"
-                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-              >
-                <Bell className="w-5 h-5 text-gray-600" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
-
-              {/* Notifications Dropdown */}
-              {isNotificationsOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
-                  <h3 className="px-4 py-2 text-sm font-semibold text-gray-900">Notifications</h3>
-                  <div className="divide-y divide-gray-100">
-                    {notifications.map((notification) => (
-                      <div key={notification.id} className="px-4 py-3 hover:bg-gray-50">
-                        <p className="text-sm font-medium text-gray-900">{notification.title}</p>
-                        <p className="text-sm text-gray-500">{notification.message}</p>
-                        <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
-                      </div>
-                    ))}
+                {/* Dropdown Menu */}
+                {activeDropdown === index && (
+                  <div className="dropdown-menu absolute left-0 mt-2 w-56 rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+                    <div className="py-2">
+                      {item.items.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          to={subItem.href}
+                          className="group flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 mr-3 group-hover:bg-blue-200">
+                            {subItem.icon}
+                          </span>
+                          <span className="font-medium group-hover:text-blue-600">
+                            {subItem.name}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            ))}
 
-            {/* Profile */}
-            <div className="relative">
-              <button
-                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100"
-                onClick={() => setIsProfileOpen(!isProfileOpen)}
-              >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center">
-                  <span className="text-sm font-medium text-white">JS</span>
-                </div>
-                <ChevronDown className="w-4 h-4 text-gray-600" />
-              </button>
+            {/* Contact & Login Buttons */}
+            <Link
+              to="/contact"
+              className="nav-link px-4 py-2 text-gray-700 font-medium hover:text-blue-600 transition-colors"
+            >
+              Contact
+            </Link>
+            <Link
+              to="/login"
+              className="login-button flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            >
+              <User className="nav-icon w-4 h-4 mr-2" />
+              Login
+            </Link>
+          </div>
 
-              {/* Profile Dropdown */}
-              {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
-                  <a href="#" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                    <User className="w-4 h-4 mr-2" />
-                    Your Profile
-                  </a>
-                  <a href="#" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                    <Settings className="w-4 h-4 mr-2" />
-                    Settings
-                  </a>
-                  <div className="border-t border-gray-100 my-1"></div>
-                  <a href="#" className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Sign out
-                  </a>
-                </div>
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
+            >
+              {isOpen ? (
+                <X className="nav-icon block h-6 w-6" />
+              ) : (
+                <Menu className="nav-icon block h-6 w-6" />
               )}
-            </div>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Search - Shown below navbar on mobile */}
-      <div className="mt-4 md:hidden">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full pl-10 pr-4 py-2 bg-gray-100 border border-transparent rounded-xl focus:bg-white focus:border-gray-300"
-          />
+      {/* Mobile menu */}
+      {isOpen && (
+        <div className="mobile-menu md:hidden bg-white shadow-lg">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            {navigation.map((item) => (
+              <div key={item.name} className="space-y-2">
+                <div className="px-3 py-2 text-base font-medium text-gray-900">
+                  {item.name}
+                </div>
+                {item.items.map((subItem) => (
+                  <Link
+                    key={subItem.name}
+                    to={subItem.href}
+                    className="flex items-center px-3 py-2 text-base text-gray-700 hover:bg-blue-50 rounded-md"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 mr-3">
+                      {subItem.icon}
+                    </span>
+                    {subItem.name}
+                  </Link>
+                ))}
+              </div>
+            ))}
+            <div className="px-3 py-3 space-y-3">
+              <Link
+                to="/contact"
+                className="nav-link block px-3 py-2 text-base font-medium text-gray-700 hover:bg-blue-50 rounded-md"
+                onClick={() => setIsOpen(false)}
+              >
+                Contact
+              </Link>
+              <Link
+                to="/login"
+                className="login-button flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700"
+                onClick={() => setIsOpen(false)}
+              >
+                <User className="nav-icon w-5 h-5 mr-2" />
+                Login
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 };
